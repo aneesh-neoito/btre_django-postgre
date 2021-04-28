@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+
+{% block title %} | Search Properties{% endblock %}
+
 {% block content %}
 
 
@@ -88,6 +91,9 @@
     </nav>
   </div>
 </section>
+
+<!-- Alerts -->
+{% include "partials/_alerts.html" %}
 
 <!-- Listings -->
 <section id="listings" class="py-4">
