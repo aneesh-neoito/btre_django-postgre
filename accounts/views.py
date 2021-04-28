@@ -1,3 +1,4 @@
+from contacts.models import Contact
 from os import umask
 from django.contrib import messages, auth
 from django.shortcuts import redirect, render
@@ -46,7 +47,7 @@ def register(request):
                 username=username,
                 email=email,
                 password=password)
-            user.save();
+            user.save()
             messages.success(request, 'Registration successful!')
             return redirect('login')
 
@@ -62,4 +63,13 @@ def logout(request):
 
 
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    if request.user.is_authenticated:
+        user_contacts = Contact.objects.order_by(
+            '-contact_date').filter(user_id=request.user.id)
+        context = {
+                'contacts': user_contacts
+            }
+        return render(request, 'accounts/dashboard.html', context)
+    else:
+        messages.error(request, 'Please login!')
+        return redirect('login')
